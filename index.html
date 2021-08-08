@@ -8,8 +8,16 @@
   <link rel="stylesheet" href="./style/main.css">
 </head>
 <body>
-  
-  <canvas id="painting" width="1000" height="600"></canvas>
+  <header class="header"></header>
+  <div class="main-content">
+    <aside class="tools"></aside>
+    <main class="painting-container">
+      <canvas id="painting" style="display: none;"></canvas>
+    </main>
+  </div>
+  <footer class="footer">
+    <div id="current-coordinate"></div>
+  </footer>
   <script type="module" src="./script/main.js"></script>
 </body>
 </html>
