@@ -1,8 +1,11 @@
 import { throttle } from './util/optimization.js';
 import PathList from './path-list/index.js';
+import config from './config/index.js';
 
 const canvas = document.getElementById('painting');
 const ctx = canvas.getContext('2d');
+
+const coordinate = document.getElementById('current-coordinate');
 
 /**
  * 绘制操作列表
@@ -10,11 +13,7 @@ const ctx = canvas.getContext('2d');
  */
 const pathList = new PathList();
 
-// TODO: 全局单例配置对象
-let blankColor = '#fff';
 let isDrawing = false;
-let pencilColor = '#000';
-let lineWidth = 1;
 
 let startX = null;
 let startY = null;
@@ -26,8 +25,10 @@ function updateStartCoordinate(x, y) {
 
 function beginDraw(x, y) {
   isDrawing = true;
-  ctx.lineWidth = lineWidth;
-  ctx.fillStyle = pencilColor;
+  ctx.lineWidth = config.lineWidth;
+  ctx.lineCap = config.lineCap;
+  ctx.fillStyle = config.pencilColor;
+  ctx.strokeStyle = config.pencilColor;
 
   pathList.push({
     path: new Path2D(),
@@ -41,7 +42,7 @@ function beginDraw(x, y) {
 function draw(x, y) {
   const path = pathList.tail().path;
   if (startX === x && startY === y) {
-    path.rect(x, y, 1, 1);
+    path.rect(x - config.lineWidth / 2, y - config.lineWidth / 2, config.lineWidth, config.lineWidth);
     ctx.fill(path);
   } else {
     // 画线而非点按的时候也会有 start coordinate == current coordinate 的情况
@@ -59,6 +60,7 @@ function handleMouseDown(e) {
 }
 
 function handleMouseMove(e) {
+  coordinate.innerText = e.offsetX + ',' +  e.offsetY;
   if (!isDrawing) {
     return;
   }
@@ -114,7 +116,7 @@ function initializeShape() {
 }
 
 function initializeBackground() {
-  ctx.fillStyle = blankColor;
+  ctx.fillStyle = config.blankColor;
   ctx.imageSmoothingEnabled = false;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
@@ -133,6 +135,7 @@ function init() {
   initializeShape();
   initializeBackground();
   initializeListener();
+  
 }
 
 function main() {

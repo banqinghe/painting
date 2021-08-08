@@ -16,8 +16,31 @@
     </main>
   </div>
   <footer class="footer">
-    <div id="current-coordinate"></div>
+    <div>
+      R<input type="range" name="red-color" id="red-color" value="0" min="0" max="255">
+      G<input type="range" name="green-color" id="green-color" value="0" min="0" max="255">
+      B<input type="range" name="blue-color" id="blue-color" value="0" min="0" max="255">
+      lineWidth <input type="range" name="line-width" id="line-width" value="1" min="1" max="50">
+    </div>
+    <div id="current-coordinate">0,0</div>
   </footer>
   <script type="module" src="./script/main.js"></script>
+  <script type="module">
+    import config from './script/config/index.js';
+
+    const redInput = document.getElementById('red-color');
+    const greenInput = document.getElementById('green-color');
+    const blueInput = document.getElementById('blue-color');
+    Array.prototype.forEach.call(document.getElementsByTagName('input'), input => {
+      console.log(input);
+      input.addEventListener('input', (e) => {
+        config.pencilColor = `rgb(${redInput.value}, ${greenInput.value}, ${blueInput.value})`;
+      })
+    });
+
+    document.getElementById('line-width').addEventListener('input', (e) => {
+      config.lineWidth = e.target.value;
+    });
+  </script>
 </body>
 </html>
