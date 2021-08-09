@@ -22,9 +22,14 @@ body {
 .tools {
   width: 140px;
   min-width: 140px;
+  padding: 20px 10px;
   background: #fff;
   border-top: 2px solid #f1f1f1;
   border-bottom: 2px solid #f1f1f1;
+}
+
+.config-input-item > input {
+  width: 100px;
 }
 
 .painting-container {
@@ -47,4 +52,19 @@ body {
   align-items: center;
   padding: 0 20px;
   background: #fff;
+  font-size: 14px;
+}
+
+.config-info {
+  display: flex;
+  align-items: center;
+}
+
+.color-text {
+  width: 145px;
+}
+
+.color-demo {
+  width: 12px;
+  height: 12px;
 }

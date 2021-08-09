@@ -1,6 +1,7 @@
 import { throttle } from './util/optimization.js';
+import deepClone from './util/deepClone.js';
 import PathList from './path-list/index.js';
-import config from './config/index.js';
+import config, { readConfig } from './config/index.js';
 
 const canvas = document.getElementById('painting');
 const ctx = canvas.getContext('2d');
@@ -25,14 +26,12 @@ function updateStartCoordinate(x, y) {
 
 function beginDraw(x, y) {
   isDrawing = true;
-  ctx.lineWidth = config.lineWidth;
-  ctx.lineCap = config.lineCap;
-  ctx.fillStyle = config.pencilColor;
-  ctx.strokeStyle = config.pencilColor;
+  readConfig(ctx, config);
 
   pathList.push({
     path: new Path2D(),
     type: 'fill',
+    config: deepClone(config),
   });
 
   pathList.tail().path.moveTo(x, y);
@@ -90,7 +89,8 @@ function handleMouseLeave(e) {
 }
 
 function restorePath() {
-  pathList.forEach(({path, type}) => {
+  pathList.forEach(({path, type, config}) => {
+    readConfig(ctx, config);
     if (type === 'stroke') {
       ctx.stroke(path);
     } else {
